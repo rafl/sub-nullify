@@ -47,7 +47,22 @@ unnullify (CV *cv)
         }
     }
 
-    croak("CV not nullified");
+    {
+        const GV *const gv = CvGV(cv);
+
+        if (gv) {
+            const char *const gvname = GvNAME(gv);
+            const HV *const stash = GvSTASH(gv);
+            const char *const hvname = stash ? HvNAME(stash) : NULL;
+
+            if (hvname)
+                croak("%s::%s is not nullified", hvname, gvname);
+            else
+                croak("%s is not nullified", gvname);
+        } else {
+            croak("CODE(0x%"UVxf") is not nullified", PTR2UV(cv));
+        }
+    }
 }
 
 MODULE = Sub::Nullify  PACKAGE = Sub::Nullify
