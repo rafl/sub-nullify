@@ -67,6 +67,8 @@ unnullify (CV *cv)
 
 MODULE = Sub::Nullify  PACKAGE = Sub::Nullify
 
+PROTOTYPES: DISABLE
+
 void
 nullify (CV *cv)
 
