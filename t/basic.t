@@ -8,22 +8,22 @@ my $i = 0;
 sub debug_log { $i++ }
 
 debug_log;
-is $i, 1;
+is $i, 1, 'nothing special initially';
 
-BEGIN {
-    Sub::Nullify::nullify(\&debug_log);
-}
+BEGIN { Sub::Nullify::nullify(\&debug_log) }
 
-# the call should be compiled away
 debug_log;
-is $i, 1;
+is $i, 1, 'the call should be compiled away';
 
-# the arg list should be compiled away as well
 debug_log $i++;
-is $i, 1;
+is $i, 1, 'the arg list should be compiled away as well';
 
-# only compilation of entersubs should be messed with
 do { \&debug_log }->();
-is $i, 2;
+is $i, 2, 'only compilation of entersubs should be messed with';
+
+BEGIN { Sub::Nullify::unnullify(\&debug_log) }
+
+debug_log;
+is $i, 3, 're-enabling works';
 
 done_testing;
