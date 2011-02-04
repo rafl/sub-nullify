@@ -1,0 +1,8 @@
+.*
+!.gitignore
+Sub-Nullify-*
+Nullify.*
+!Nullify.xs
+Makefile*
+!Makefile.PL
+*blib
